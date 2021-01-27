@@ -48,8 +48,6 @@ class Ventana:
 
     def motion(self,event):
         x, y = event.x, event.y       
-        ##x = self.instancia.winfo_pointerx()
-        ##y = self.instancia.winfo_pointery()
         if self.ActivoResistencia:
             self.ponerResistencia(x,y)
 
