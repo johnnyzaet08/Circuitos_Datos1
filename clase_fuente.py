@@ -1,5 +1,5 @@
 
-class Bateria:
+class Fuente:
     def __init__(self,nom,valor,orientacion,boton):
         self.nom = nom 
         self.valor = valor
