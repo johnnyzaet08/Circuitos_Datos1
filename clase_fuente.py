@@ -8,6 +8,14 @@ class Fuente:
         self.active = False
         self.conectado = False
         self.coordx, self.coordy = None, None
+        self.cablesConectados = []
+
+    def getCablesConectados(self):
+        return self.cablesConectados
+    def eliminarCablesConectados(self,cable):
+        self.cablesConectados.remove(cable)
+    def agregarCable(self,cable):
+        self.cablesConectados.append(cable)
 
     def getNom(self):
         return self.nom

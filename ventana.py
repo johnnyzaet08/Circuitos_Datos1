@@ -4,6 +4,7 @@ from threading import *
 from time import *
 from clase_resistencia import *
 from clase_fuente import *
+from clase_cable import *
 
 
 
@@ -32,6 +33,10 @@ class Ventana:
         self.img_Conectar = PhotoImage(file = "Imagenes/conectar.png")
         self.Resistencias = []
         self.Fuentes = []
+        self.Simulacion = []
+        self.cables = []
+        self.infoNodo =  None
+        
 
     def abrirVentana(self):
         self.instancia.title('Menu principal')
@@ -41,21 +46,35 @@ class Ventana:
         self.fon = Canvas(self.instancia , width= 1336, height = 548)
         self.fon.pack(expand = NO, fill = BOTH)
         self.fon.create_image(0,0, image = fondo, anchor = NW)
+
+        self.infoNodo = Label(self.fon,text = "Holiiis",bg = 'Gray')
         '''fon = Label(self.instancia,image = fondo,bg = 'black')    MAE ESTO LO MODIFIQUE PARA DIBUJAR LINEAS   
         fon.place(x=0,y =0)'''
         #boton de resistancia
         self.B_Resistencia = Button(self.instancia,text= 'Resistencia',image = self.img_resistencia,height = 68, width = 80,command = lambda:self.configuracion("resistencia"))
         self.B_Resistencia.place(x= 80,y=450)
+        
         #boton de fuente
         self.B_fuente = Button(self.instancia,text= 'fuente de poder',image = self.img_fuente,height = 68, width = 80, command = lambda:self.configuracion("fuente"))
         self.B_fuente.place(x= 180,y=450)
         self.B_Resistencia.configure()
-
+        #boton de simulacion
+        self.B_Simulacion = Button(self.instancia,text= 'Simulacion',height = 4, width = 11,command = lambda:self.simulacion())
+        self.B_Simulacion.place(x=1100,y=450)
+        self.instancia.bind('<Motion>', self.motion2)
         self.instancia.bind('<Button-1>', self.motion)
 
         self.instancia.geometry('1336x548+0+100')
         self.instancia.mainloop()
-
+    def motion2(self,event):
+        x, y = event.x, event.y
+        for elem in (self.cables):
+            if elem.colision(x,y):
+                self.infoNodo.place_forget() 
+                self.infoNodo.place(x=x,y=y-12)
+            else:
+                self.infoNodo.place_forget() 
+        
     def motion(self,event):
         x, y = event.x, event.y
         if x > 102 and y > 68 and y < 376 and x < 1240:      
@@ -79,7 +98,22 @@ class Ventana:
         btnAceptar = Button(configuracion,text= 'Aceptar',command = lambda:self.AceptarConfiguracion(configuracion,TextoNombre,TextoValor,who))
         btnAceptar.place(x= 5,y=45)
         configuracion.place(x=280, y=450)
-    
+    def simulacion(self):
+        for elem in (self.Resistencias):
+            LabelNombreValor = Label(self.instancia,text = elem.getNom() + "\n"+ elem.getValor() +"(Ω)",font= ('Times New Roman',15),bg= '#efe4b0',fg= 'black')
+            LabelNombreValor.place(x= elem.getCoords()[0]-40,y=elem.getCoords()[1]+50)
+            self.Simulacion.append(LabelNombreValor)
+        for elem in (self.Fuentes):
+            LabelNombreValor = Label(self.instancia,text = elem.getNom() + "\n"+ elem.getValor() +"(V)",font= ('Times New Roman',15),bg= '#efe4b0',fg= 'black')
+            LabelNombreValor.place(x= elem.getCoords()[0]-40,y=elem.getCoords()[1]+50)
+            self.Simulacion.append(LabelNombreValor)
+        #boton de Terminar Simulacion
+        self.B_Termina_Simulacion = Button(self.instancia,text= 'Terminar',height = 4, width = 11,command = lambda:self.terminarSimulacion())
+        self.B_Termina_Simulacion.place(x=1000,y=450)
+        self.Simulacion.append(self.B_Termina_Simulacion)
+    def terminarSimulacion(self):
+        for elem in (self.Simulacion):
+            elem.destroy()
     def conectar(self, x, y, who, boton):
         boton.configure(state = DISABLED)
         conectar = Canvas(self.instancia, width=200, height=50, bg="black")
@@ -97,10 +131,301 @@ class Ventana:
         ventana.destroy()
         for elem in (self.Resistencias):
             if Nombre == elem.getNom() and Nombre != who.getNom():
-                self.fon.create_line(coordx, coordy, elem.getCoords(), width=5)
+                if elem.getOrientacion() == "horizontal":
+                    if elem.getCoords()[0] <= coordx:
+                        if who.getOrientacion() == "horizontal":
+                            self.unoa = self.fon.create_line(coordx-48, coordy, coordx,coordy, width=5)
+                            self.dosa = self.fon.create_line(coordx-46, coordy,coordx-46, elem.getCoords()[1], width=5)
+                            self.tresa =self.fon.create_line(coordx-48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx-48, coordy, coordx,coordy)
+                            Cable.agregarUnion(self.dosa,coordx-46,elem.getCoords()[1] ,coordx-46, coordy)
+                            Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1],coordx-48 ,elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                        else:
+                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1], width=5)
+                            self.dosa =self.fon.create_line(coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx, elem.getCoords()[1],coordx, coordy)
+                            Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1], coordx,elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                            
+                    else:
+                        if who.getOrientacion() == "horizontal":
+                            self.unoa =self.fon.create_line(coordx+53, coordy, coordx,coordy, width=5)
+                            self.dosa =self.fon.create_line(coordx+50, coordy,coordx+50, elem.getCoords()[1], width=5)
+                            self.tresa =self.fon.create_line(coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx, coordy, coordx+53,coordy)
+                            Cable.agregarUnion(self.dosa,coordx+50,elem.getCoords()[1] ,coordx+50, coordy)
+                            Cable.agregarUnion(self.tresa,coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                        else:
+                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1], width=5)
+                            self.dosa= self.fon.create_line(coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx, elem.getCoords()[1],coordx, coordy)
+                            Cable.agregarUnion(self.dosa,coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                else:
+                    if elem.getCoords()[1] >= coordy:
+                        if who.getOrientacion() == "horizontal":
+                            if elem.getCoords()[0] >= coordx:
+                                self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
+                                self.dosa=self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1])
+                                Cable.agregarUnion(self.dosa,coordx+46, coordy, elem.getCoords()[0],coordy)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                            else:
+                                self.unoa = self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
+                                self.dosa = self.fon.create_line(coordx-42, coordy, elem.getCoords()[0],coordy, width=5)
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1])
+                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], coordy, coordx-42,coordy)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                        else:
+                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1]-51, width=5)
+                            self.dosa = self.fon.create_line(coordx, elem.getCoords()[1]-53, elem.getCoords()[0],elem.getCoords()[1]-53, width=5)
+                            self.tresa =self.fon.create_line(elem.getCoords()[0], elem.getCoords()[1]-55, elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx, coordy,coordx, elem.getCoords()[1]-51)
+                            Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1]-53, coordx,elem.getCoords()[1]-53)
+                            Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1]-55, elem.getCoords()[0],elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                    else:
+                        if who.getOrientacion() == "horizontal":
+                            if elem.getCoords()[0] >= coordx:
+                                self.unoa = self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1]+51, width=5)
+                                self.dosa = self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,elem.getCoords()[0],elem.getCoords()[1]+51 ,elem.getCoords()[0],coordy )
+                                Cable.agregarUnion(self.dosa,coordx+46, coordy, elem.getCoords()[0],coordy)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                            else:
+                                self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1]+51, width=5)
+                                self.dosa =self.fon.create_line(coordx-42, coordy, elem.getCoords()[0],coordy, width=5)
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], elem.getCoords()[1]+51 ,elem.getCoords()[0],coordy )
+                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], coordy, coordx-42,coordy)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                        else:
+                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1]+51, width=5)
+                            self.dosa = self.fon.create_line(coordx, elem.getCoords()[1]+53, elem.getCoords()[0],elem.getCoords()[1]+53, width=5)
+                            if coordx >= elem.getCoords()[0]: 
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,coordx,elem.getCoords()[1]+51 ,coordx, coordy )
+                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1]+53, coordx,elem.getCoords()[1]+53)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                            else:
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,coordx,elem.getCoords()[1]+51 ,coordx,  coordy )
+                                Cable.agregarUnion(self.dosa,coordx, elem.getCoords()[1]+53, elem.getCoords()[0],elem.getCoords()[1]+53)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                            
         for elem in (self.Fuentes):
             if Nombre == elem.getNom() and Nombre != who.getNom():
-                self.fon.create_line(coordx, coordy, elem.getCoords(), width=5)
+                if elem.getOrientacion() == "horizontal":
+                    if elem.getCoords()[0] <= coordx:
+                        if who.getOrientacion() == "horizontal":
+                            self.unoa = self.fon.create_line(coordx-48, coordy, coordx,coordy, width=5)
+                            self.dosa = self.fon.create_line(coordx-46, coordy,coordx-46, elem.getCoords()[1], width=5)
+                            self.tresa =self.fon.create_line(coordx-48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx-48, coordy, coordx,coordy)
+                            Cable.agregarUnion(self.dosa,coordx-46,elem.getCoords()[1] ,coordx-46, coordy)
+                            Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1],coordx-48 ,elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                        else:
+                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1], width=5)
+                            self.dosa =self.fon.create_line(coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx, elem.getCoords()[1],coordx, coordy)
+                            Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1], coordx,elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                            
+                    else:
+                        if who.getOrientacion() == "horizontal":
+                            self.unoa =self.fon.create_line(coordx+53, coordy, coordx,coordy, width=5)
+                            self.dosa =self.fon.create_line(coordx+50, coordy,coordx+50, elem.getCoords()[1], width=5)
+                            self.tresa =self.fon.create_line(coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx, coordy, coordx+53,coordy)
+                            Cable.agregarUnion(self.dosa,coordx+50,elem.getCoords()[1] ,coordx+50, coordy)
+                            Cable.agregarUnion(self.tresa,coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                        else:
+                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1], width=5)
+                            self.dosa= self.fon.create_line(coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx, elem.getCoords()[1],coordx, coordy)
+                            Cable.agregarUnion(self.dosa,coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                else:
+                    if elem.getCoords()[1] >= coordy:
+                        if who.getOrientacion() == "horizontal":
+                            if elem.getCoords()[0] >= coordx:
+                                self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
+                                self.dosa=self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1])
+                                Cable.agregarUnion(self.dosa,coordx+46, coordy, elem.getCoords()[0],coordy)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                            else:
+                                self.unoa = self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
+                                self.dosa = self.fon.create_line(coordx-42, coordy, elem.getCoords()[0],coordy, width=5)
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1])
+                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], coordy, coordx-42,coordy)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                        else:
+                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1]-51, width=5)
+                            self.dosa = self.fon.create_line(coordx, elem.getCoords()[1]-53, elem.getCoords()[0],elem.getCoords()[1]-53, width=5)
+                            self.tresa =self.fon.create_line(elem.getCoords()[0], elem.getCoords()[1]-55, elem.getCoords()[0],elem.getCoords()[1], width=5)
+                            Cable = Cables()
+                            Cable.agregarUnion(self.unoa,coordx, coordy,coordx, elem.getCoords()[1]-51)
+                            Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1]-53, coordx,elem.getCoords()[1]-53)
+                            Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1]-55, elem.getCoords()[0],elem.getCoords()[1])
+                            self.cables.append(Cable)
+                            #
+                            who.agregarCable(Cable)
+                            elem.agregarCable(Cable)
+                            Cable.agregarComponentes(who)
+                            Cable.agregarComponentes(elem)
+                    else:###
+                        if who.getOrientacion() == "horizontal":
+                            if elem.getCoords()[0] >= coordx:
+                                self.unoa = self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1]+51, width=5)
+                                self.dosa = self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,elem.getCoords()[0],elem.getCoords()[1]+51 ,elem.getCoords()[0],coordy )
+                                Cable.agregarUnion(self.dosa,coordx+46, coordy, elem.getCoords()[0],coordy)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                            else:
+                                self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1]+51, width=5)
+                                self.dosa =self.fon.create_line(coordx-42, coordy, elem.getCoords()[0],coordy, width=5)
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], elem.getCoords()[1]+51 ,elem.getCoords()[0],coordy )
+                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], coordy, coordx-42,coordy)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                        else:
+                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1]+51, width=5)
+                            self.dosa = self.fon.create_line(coordx, elem.getCoords()[1]+53, elem.getCoords()[0],elem.getCoords()[1]+53, width=5)
+                            if coordx >= elem.getCoords()[0]: 
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,coordx,elem.getCoords()[1]+51 ,coordx, coordy )
+                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1]+53, coordx,elem.getCoords()[1]+53)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
+                            else:
+                                Cable = Cables()
+                                Cable.agregarUnion(self.unoa,coordx,elem.getCoords()[1]+51 ,coordx,  coordy )
+                                Cable.agregarUnion(self.dosa,coordx, elem.getCoords()[1]+53, elem.getCoords()[0],elem.getCoords()[1]+53)
+                                self.cables.append(Cable)
+                                #
+                                who.agregarCable(Cable)
+                                elem.agregarCable(Cable)
+                                Cable.agregarComponentes(who)
+                                Cable.agregarComponentes(elem)
 
     def girarResistencia(self,resistencia,btnResistencia):
         if resistencia.getOrientacion() == "horizontal":
@@ -120,6 +445,12 @@ class Ventana:
 
     def eliminarComponente(self,componente, boton, canvas):
         boton.destroy()
+        for elem in  componente.getCablesConectados():
+            for elem2 in  elem.getUniones():
+                self.fon.delete(elem2)
+            elem.getComponentes()[0].eliminarCablesConectados(elem)
+            elem.getComponentes()[1].eliminarCablesConectados(elem)
+            
         if componente in self.Fuentes:
             self.Fuentes.remove(componente)
         if componente in self.Resistencias:
@@ -134,7 +465,7 @@ class Ventana:
     def modifica(self,x,y,Componente,boton,who):
         if Componente.active == False and who == "resistencia":
             Componente.active = True
-            canvas = Canvas(self.instancia , width= 160, height = 40, bg = "#eeaa02")
+            canvas = Canvas(self.instancia , width= 160, height = 40, bg = "Gray")
             btnGirar = Button(canvas,image = self.img_Girar, command = lambda:self.girarResistencia(Componente,boton))
             btnGirar.place(x= 0,y=0)
             btnEliminar = Button(canvas,image = self.img_Eliminar, command = lambda:self.eliminarComponente(Componente, boton,canvas))
@@ -148,7 +479,7 @@ class Ventana:
 
         elif Componente.active == False and who == "fuente":
             Componente.active = True
-            canvas = Canvas(self.instancia , width= 160, height = 40, bg = "#eeaa02")
+            canvas = Canvas(self.instancia , width= 160, height = 40, bg = "Gray")
             btnGirar = Button(canvas,image = self.img_Girar, command = lambda:self.girarFuente(Componente,boton))
             btnGirar.place(x= 0,y=0)
             btnEliminar = Button(canvas,image = self.img_Eliminar, command = lambda:self.eliminarComponente(Componente, boton,canvas))
@@ -180,6 +511,7 @@ class Ventana:
         ResistenciaP.setCoords(x2, y2)
         Resitenciab.configure(command = lambda:self.modifica(x2-40,y2-34,ResistenciaP,Resitenciab,"resistencia"))
         Resitenciab.place(x= x2-40,y=y2-34)
+        
         self.Resistencias.append(ResistenciaP)
         self.ActivoResistencia = False
     
