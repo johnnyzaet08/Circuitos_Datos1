@@ -6,6 +6,8 @@ class Resistencia:
         self.orientacion =  orientacion
         self.boton = boton
         self.active = False
+        self.conectado = False
+        self.coordx, self.coordy = None, None
 
     def getNom(self):
         return self.nom
@@ -18,6 +20,9 @@ class Resistencia:
     
     def getBoton(self):
         return self.boton
+    
+    def getCoords(self):
+        return self.coordx, self.coordy
 
     def setNom(self,nomn):
         self.nom = nomn
@@ -30,6 +35,9 @@ class Resistencia:
 
     def setBoton(self,botonn):
         self.boton = botonn
+    
+    def setCoords(self, x, y):
+        self.coordx, self.coordy = x, y
 
     
 
