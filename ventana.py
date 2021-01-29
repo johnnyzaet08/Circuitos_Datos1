@@ -66,14 +66,12 @@ class Ventana:
 
         self.instancia.geometry('1336x548+0+100')
         self.instancia.mainloop()
-    def motion2(self,event):
+    def motion2(self,event):#########################################revisar, es el causante de como aparece el self.infoNodo
         x, y = event.x, event.y
         for elem in (self.cables):
             if elem.colision(x,y):
                 self.infoNodo.place_forget() 
                 self.infoNodo.place(x=x,y=y-12)
-            else:
-                self.infoNodo.place_forget() 
         
     def motion(self,event):
         x, y = event.x, event.y
@@ -139,7 +137,7 @@ class Ventana:
                             self.tresa =self.fon.create_line(coordx-48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
                             Cable = Cables()
                             Cable.agregarUnion(self.unoa,coordx-48, coordy, coordx,coordy)
-                            Cable.agregarUnion(self.dosa,coordx-46,elem.getCoords()[1] ,coordx-46, coordy)
+                            Cable.agregarUnion(self.dosa,coordx-46,coordy ,coordx-46,  elem.getCoords()[1])
                             Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1],coordx-48 ,elem.getCoords()[1])
                             self.cables.append(Cable)
                             #
@@ -162,15 +160,16 @@ class Ventana:
                             
                     else:
                         if who.getOrientacion() == "horizontal":
+                            
                             self.unoa =self.fon.create_line(coordx+53, coordy, coordx,coordy, width=5)
                             self.dosa =self.fon.create_line(coordx+50, coordy,coordx+50, elem.getCoords()[1], width=5)
                             self.tresa =self.fon.create_line(coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
                             Cable = Cables()
                             Cable.agregarUnion(self.unoa,coordx, coordy, coordx+53,coordy)
-                            Cable.agregarUnion(self.dosa,coordx+50,elem.getCoords()[1] ,coordx+50, coordy)
+                            Cable.agregarUnion(self.dosa,coordx+50,coordy ,coordx+50,  elem.getCoords()[1])
                             Cable.agregarUnion(self.tresa,coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
                             self.cables.append(Cable)
-                            #
+                            #####
                             who.agregarCable(Cable)
                             elem.agregarCable(Cable)
                             Cable.agregarComponentes(who)
@@ -316,7 +315,7 @@ class Ventana:
                             self.tresa =self.fon.create_line(coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
                             Cable = Cables()
                             Cable.agregarUnion(self.unoa,coordx, coordy, coordx+53,coordy)
-                            Cable.agregarUnion(self.dosa,coordx+50,elem.getCoords()[1] ,coordx+50, coordy)
+                            Cable.agregarUnion(self.dosa,coordx+50,coordy ,coordx+50,  elem.getCoords()[1])
                             Cable.agregarUnion(self.tresa,coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
                             self.cables.append(Cable)
                             #
@@ -339,6 +338,7 @@ class Ventana:
                 else:
                     if elem.getCoords()[1] >= coordy:
                         if who.getOrientacion() == "horizontal":
+                            
                             if elem.getCoords()[0] >= coordx:
                                 self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
                                 self.dosa=self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
@@ -445,11 +445,14 @@ class Ventana:
 
     def eliminarComponente(self,componente, boton, canvas):
         boton.destroy()
-        for elem in  componente.getCablesConectados():
-            for elem2 in  elem.getUniones():
+        while componente.getCablesConectados() != []:
+            print(len( componente.getCablesConectados()))
+            for elem2 in  componente.getCablesConectados()[0].getUniones():
                 self.fon.delete(elem2)
-            elem.getComponentes()[0].eliminarCablesConectados(elem)
-            elem.getComponentes()[1].eliminarCablesConectados(elem)
+            print(componente.getCablesConectados()[0].getComponentes()[0])
+            eliminar = componente.getCablesConectados()[0]
+            componente.getCablesConectados()[0].getComponentes()[0].eliminarCablesConectados(eliminar)
+            componente.getCablesConectados()[0].getComponentes()[1].eliminarCablesConectados(eliminar)
             
         if componente in self.Fuentes:
             self.Fuentes.remove(componente)

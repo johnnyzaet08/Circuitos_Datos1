@@ -1,4 +1,4 @@
-
+from clase_cable import *
 class Resistencia:
     def __init__(self,nom,valor,orientacion,boton):
         self.nom = nom 
