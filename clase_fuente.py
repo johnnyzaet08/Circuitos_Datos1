@@ -9,6 +9,10 @@ class Fuente:
         self.conectado = False
         self.coordx, self.coordy = None, None
         self.cablesConectados = []
+        self.izquierda = False
+        self.Derecha = False
+        self.Arriba = False
+        self.abajo = False
 
     def getCablesConectados(self):
         return self.cablesConectados
@@ -16,6 +20,22 @@ class Fuente:
         self.cablesConectados.remove(cable)
     def agregarCable(self,cable):
         self.cablesConectados.append(cable)
+    def getIzquierda(self):
+        return self.izquierda
+    def getDerecha(self):
+        return self.Derecha
+    def getArriba(self):
+        return self.Arriba
+    def getAbajo(self):
+        return self.abajo
+    def setIzquierda(self,boolean):
+        self.izquierda= boolean
+    def setDerecha(self,boolean):
+        self.Derecha= boolean
+    def setArriba(self,boolean):
+        self.Arriba= boolean
+    def setAbajo(self,boolean):
+        self.abajo= boolean
 
     def getNom(self):
         return self.nom

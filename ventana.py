@@ -5,6 +5,7 @@ from time import *
 from clase_resistencia import *
 from clase_fuente import *
 from clase_cable import *
+from trazador_de_cables import *
 
 
 
@@ -132,300 +133,84 @@ class Ventana:
                 if elem.getOrientacion() == "horizontal":
                     if elem.getCoords()[0] <= coordx:
                         if who.getOrientacion() == "horizontal":
-                            self.unoa = self.fon.create_line(coordx-48, coordy, coordx,coordy, width=5)
-                            self.dosa = self.fon.create_line(coordx-46, coordy,coordx-46, elem.getCoords()[1], width=5)
-                            self.tresa =self.fon.create_line(coordx-48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx-48, coordy, coordx,coordy)
-                            Cable.agregarUnion(self.dosa,coordx-46,coordy ,coordx-46,  elem.getCoords()[1])
-                            Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1],coordx-48 ,elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
+                            
+                            AderechaH_BizquierdaH(elem,who,self.fon,self.cables)
                         else:
-                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1], width=5)
-                            self.dosa =self.fon.create_line(coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx, elem.getCoords()[1],coordx, coordy)
-                            Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1], coordx,elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
+                            AderechaV_BizquierdaH(elem,who,self.fon,self.cables)
+                            
                             
                     else:
                         if who.getOrientacion() == "horizontal":
+                            AizquierdaH_BderechaH(elem,who,self.fon,self.cables)
                             
-                            self.unoa =self.fon.create_line(coordx+53, coordy, coordx,coordy, width=5)
-                            self.dosa =self.fon.create_line(coordx+50, coordy,coordx+50, elem.getCoords()[1], width=5)
-                            self.tresa =self.fon.create_line(coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx, coordy, coordx+53,coordy)
-                            Cable.agregarUnion(self.dosa,coordx+50,coordy ,coordx+50,  elem.getCoords()[1])
-                            Cable.agregarUnion(self.tresa,coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #####
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
                         else:
-                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1], width=5)
-                            self.dosa= self.fon.create_line(coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx, elem.getCoords()[1],coordx, coordy)
-                            Cable.agregarUnion(self.dosa,coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
+                            AizquierdaV_BderechaH(elem,who,self.fon,self.cables)
                 else:
                     if elem.getCoords()[1] >= coordy:
                         if who.getOrientacion() == "horizontal":
                             if elem.getCoords()[0] >= coordx:
-                                self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
-                                self.dosa=self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1])
-                                Cable.agregarUnion(self.dosa,coordx+46, coordy, elem.getCoords()[0],coordy)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                                AarribaIzquierdaH_BabajoDerechaV(elem,who,self.fon,self.cables)
+                                
                             else:
-                                self.unoa = self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
-                                self.dosa = self.fon.create_line(coordx-42, coordy, elem.getCoords()[0],coordy, width=5)
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1])
-                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], coordy, coordx-42,coordy)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                                
+                                AarribaDerechaH_BabajoIzquierdaV(elem,who,self.fon,self.cables)
+                                
                         else:
-                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1]-51, width=5)
-                            self.dosa = self.fon.create_line(coordx, elem.getCoords()[1]-53, elem.getCoords()[0],elem.getCoords()[1]-53, width=5)
-                            self.tresa =self.fon.create_line(elem.getCoords()[0], elem.getCoords()[1]-55, elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx, coordy,coordx, elem.getCoords()[1]-51)
-                            Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1]-53, coordx,elem.getCoords()[1]-53)
-                            Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1]-55, elem.getCoords()[0],elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
+                            AarribaV_BabajoV(elem,who,self.fon,self.cables)
+                            
                     else:
                         if who.getOrientacion() == "horizontal":
                             if elem.getCoords()[0] >= coordx:
-                                self.unoa = self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1]+51, width=5)
-                                self.dosa = self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,elem.getCoords()[0],elem.getCoords()[1]+51 ,elem.getCoords()[0],coordy )
-                                Cable.agregarUnion(self.dosa,coordx+46, coordy, elem.getCoords()[0],coordy)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                                
+                                AabajoIzquierdaH_BarribaDerechaV(elem,who,self.fon,self.cables)
+                                
                             else:
-                                self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1]+51, width=5)
-                                self.dosa =self.fon.create_line(coordx-42, coordy, elem.getCoords()[0],coordy, width=5)
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], elem.getCoords()[1]+51 ,elem.getCoords()[0],coordy )
-                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], coordy, coordx-42,coordy)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                                AabajoDerechaH_BarribaIzquierdaV(elem,who,self.fon,self.cables)
+                                
                         else:
-                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1]+51, width=5)
-                            self.dosa = self.fon.create_line(coordx, elem.getCoords()[1]+53, elem.getCoords()[0],elem.getCoords()[1]+53, width=5)
-                            if coordx >= elem.getCoords()[0]: 
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,coordx,elem.getCoords()[1]+51 ,coordx, coordy )
-                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1]+53, coordx,elem.getCoords()[1]+53)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
-                            else:
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,coordx,elem.getCoords()[1]+51 ,coordx,  coordy )
-                                Cable.agregarUnion(self.dosa,coordx, elem.getCoords()[1]+53, elem.getCoords()[0],elem.getCoords()[1]+53)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                            AabajoV_BarribaV(elem,who,self.fon,self.cables)
                             
         for elem in (self.Fuentes):
             if Nombre == elem.getNom() and Nombre != who.getNom():
                 if elem.getOrientacion() == "horizontal":
                     if elem.getCoords()[0] <= coordx:
                         if who.getOrientacion() == "horizontal":
-                            self.unoa = self.fon.create_line(coordx-48, coordy, coordx,coordy, width=5)
-                            self.dosa = self.fon.create_line(coordx-46, coordy,coordx-46, elem.getCoords()[1], width=5)
-                            self.tresa =self.fon.create_line(coordx-48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx-48, coordy, coordx,coordy)
-                            Cable.agregarUnion(self.dosa,coordx-46,elem.getCoords()[1] ,coordx-46, coordy)
-                            Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1],coordx-48 ,elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
+                            
+                            AderechaH_BizquierdaH(elem,who,self.fon,self.cables)
                         else:
-                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1], width=5)
-                            self.dosa =self.fon.create_line(coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx, elem.getCoords()[1],coordx, coordy)
-                            Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1], coordx,elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
+                            AderechaV_BizquierdaH(elem,who,self.fon,self.cables)
+                            
                             
                     else:
                         if who.getOrientacion() == "horizontal":
-                            self.unoa =self.fon.create_line(coordx+53, coordy, coordx,coordy, width=5)
-                            self.dosa =self.fon.create_line(coordx+50, coordy,coordx+50, elem.getCoords()[1], width=5)
-                            self.tresa =self.fon.create_line(coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx, coordy, coordx+53,coordy)
-                            Cable.agregarUnion(self.dosa,coordx+50,coordy ,coordx+50,  elem.getCoords()[1])
-                            Cable.agregarUnion(self.tresa,coordx+48, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
+                            AizquierdaH_BderechaH(elem,who,self.fon,self.cables)
+                            
                         else:
-                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1], width=5)
-                            self.dosa= self.fon.create_line(coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx, elem.getCoords()[1],coordx, coordy)
-                            Cable.agregarUnion(self.dosa,coordx, elem.getCoords()[1], elem.getCoords()[0],elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
+                            AizquierdaV_BderechaH(elem,who,self.fon,self.cables)
                 else:
                     if elem.getCoords()[1] >= coordy:
                         if who.getOrientacion() == "horizontal":
-                            
                             if elem.getCoords()[0] >= coordx:
-                                self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
-                                self.dosa=self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1])
-                                Cable.agregarUnion(self.dosa,coordx+46, coordy, elem.getCoords()[0],coordy)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                                AarribaIzquierdaH_BabajoDerechaV(elem,who,self.fon,self.cables)
+                                
                             else:
-                                self.unoa = self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1], width=5)
-                                self.dosa = self.fon.create_line(coordx-42, coordy, elem.getCoords()[0],coordy, width=5)
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1])
-                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], coordy, coordx-42,coordy)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                                
+                                AarribaDerechaH_BabajoIzquierdaV(elem,who,self.fon,self.cables)
+                                
                         else:
-                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1]-51, width=5)
-                            self.dosa = self.fon.create_line(coordx, elem.getCoords()[1]-53, elem.getCoords()[0],elem.getCoords()[1]-53, width=5)
-                            self.tresa =self.fon.create_line(elem.getCoords()[0], elem.getCoords()[1]-55, elem.getCoords()[0],elem.getCoords()[1], width=5)
-                            Cable = Cables()
-                            Cable.agregarUnion(self.unoa,coordx, coordy,coordx, elem.getCoords()[1]-51)
-                            Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1]-53, coordx,elem.getCoords()[1]-53)
-                            Cable.agregarUnion(self.tresa,elem.getCoords()[0], elem.getCoords()[1]-55, elem.getCoords()[0],elem.getCoords()[1])
-                            self.cables.append(Cable)
-                            #
-                            who.agregarCable(Cable)
-                            elem.agregarCable(Cable)
-                            Cable.agregarComponentes(who)
-                            Cable.agregarComponentes(elem)
-                    else:###
+                            AarribaV_BabajoV(elem,who,self.fon,self.cables)
+                            
+                    else:
                         if who.getOrientacion() == "horizontal":
                             if elem.getCoords()[0] >= coordx:
-                                self.unoa = self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1]+51, width=5)
-                                self.dosa = self.fon.create_line(coordx+46, coordy, elem.getCoords()[0],coordy, width=5)
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,elem.getCoords()[0],elem.getCoords()[1]+51 ,elem.getCoords()[0],coordy )
-                                Cable.agregarUnion(self.dosa,coordx+46, coordy, elem.getCoords()[0],coordy)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                                
+                                AabajoIzquierdaH_BarribaDerechaV(elem,who,self.fon,self.cables)
+                                
                             else:
-                                self.unoa =self.fon.create_line(elem.getCoords()[0], coordy,elem.getCoords()[0], elem.getCoords()[1]+51, width=5)
-                                self.dosa =self.fon.create_line(coordx-42, coordy, elem.getCoords()[0],coordy, width=5)
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,elem.getCoords()[0], elem.getCoords()[1]+51 ,elem.getCoords()[0],coordy )
-                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], coordy, coordx-42,coordy)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                                AabajoDerechaH_BarribaIzquierdaV(elem,who,self.fon,self.cables)
+                                
                         else:
-                            self.unoa = self.fon.create_line(coordx, coordy,coordx, elem.getCoords()[1]+51, width=5)
-                            self.dosa = self.fon.create_line(coordx, elem.getCoords()[1]+53, elem.getCoords()[0],elem.getCoords()[1]+53, width=5)
-                            if coordx >= elem.getCoords()[0]: 
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,coordx,elem.getCoords()[1]+51 ,coordx, coordy )
-                                Cable.agregarUnion(self.dosa,elem.getCoords()[0], elem.getCoords()[1]+53, coordx,elem.getCoords()[1]+53)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
-                            else:
-                                Cable = Cables()
-                                Cable.agregarUnion(self.unoa,coordx,elem.getCoords()[1]+51 ,coordx,  coordy )
-                                Cable.agregarUnion(self.dosa,coordx, elem.getCoords()[1]+53, elem.getCoords()[0],elem.getCoords()[1]+53)
-                                self.cables.append(Cable)
-                                #
-                                who.agregarCable(Cable)
-                                elem.agregarCable(Cable)
-                                Cable.agregarComponentes(who)
-                                Cable.agregarComponentes(elem)
+                            AabajoV_BarribaV(elem,who,self.fon,self.cables)
 
     def girarResistencia(self,resistencia,btnResistencia):
         if resistencia.getOrientacion() == "horizontal":
