@@ -9,6 +9,7 @@ class Resistencia:
         self.conectado = False
         self.coordx, self.coordy = None, None
         self.cablesConectados = []
+        self.conectadoCon = []
         self.izquierda = False
         self.Derecha = False
         self.Arriba = False
@@ -37,7 +38,15 @@ class Resistencia:
     def setAbajo(self,boolean):
         self.abajo= boolean
         
-        
+    def setConectadoCon(self, nombre):
+        self.conectadoCon.append(nombre)
+    def getConectadoCon(self):
+        nombre = ""
+        for elem in self.conectadoCon:
+            nombre += str(elem)
+            nombre += ","
+        return nombre
+
     def getNom(self):
         return self.nom
     

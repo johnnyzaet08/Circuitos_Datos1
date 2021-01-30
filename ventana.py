@@ -6,6 +6,8 @@ from clase_resistencia import *
 from clase_fuente import *
 from clase_cable import *
 from trazador_de_cables import *
+from random import randint
+import pandas as pd
 
 
 
@@ -47,10 +49,11 @@ class Ventana:
         self.fon = Canvas(self.instancia , width= 1336, height = 548)
         self.fon.pack(expand = NO, fill = BOTH)
         self.fon.create_image(0,0, image = fondo, anchor = NW)
+        
+        voltaje = randint(0,10)
+        amperaje = randint(0,10) / 1000
+        self.infoNodo = Label(self.fon,text = str(voltaje) + "V\n" + str(amperaje) + "Ω" ,bg = 'Gray')
 
-        self.infoNodo = Label(self.fon,text = "Holiiis",bg = 'Gray')
-        '''fon = Label(self.instancia,image = fondo,bg = 'black')    MAE ESTO LO MODIFIQUE PARA DIBUJAR LINEAS   
-        fon.place(x=0,y =0)'''
         #boton de resistancia
         self.B_Resistencia = Button(self.instancia,text= 'Resistencia',image = self.img_resistencia,height = 68, width = 80,command = lambda:self.configuracion("resistencia"))
         self.B_Resistencia.place(x= 80,y=450)
@@ -59,15 +62,108 @@ class Ventana:
         self.B_fuente = Button(self.instancia,text= 'fuente de poder',image = self.img_fuente,height = 68, width = 80, command = lambda:self.configuracion("fuente"))
         self.B_fuente.place(x= 180,y=450)
         self.B_Resistencia.configure()
+
         #boton de simulacion
         self.B_Simulacion = Button(self.instancia,text= 'Simulacion',height = 4, width = 11,command = lambda:self.simulacion())
-        self.B_Simulacion.place(x=1100,y=450)
+        self.B_Simulacion.place(x=1080,y=450)
+
+        #boton de exportar
+        self.B_Exportacion = Button(self.instancia,text= 'Exportar',height = 4, width = 11,command = lambda:self.expNombre())
+        self.B_Exportacion.place(x=580,y=450)
+
+        #boton de importar
+        self.B_Importar = Button(self.instancia,text= 'Importar',height = 4, width = 11,command = lambda:self.impNombre())
+        self.B_Importar.place(x=680,y=450)
+
         self.instancia.bind('<Motion>', self.motion2)
         self.instancia.bind('<Button-1>', self.motion)
-
         self.instancia.geometry('1336x548+0+100')
         self.instancia.mainloop()
-    def motion2(self,event):#########################################revisar, es el causante de como aparece el self.infoNodo
+    
+    def expNombre(self):
+        #self.B_Exportacion(state =DISABLED)
+        Exportacion = Canvas(self.instancia , width= 150, height = 72, bg = "black")
+        LabelNombre= Label(Exportacion,text = 'Nombre del archivo para exportar',font= ('Times New Roman', 7),bg= 'black',fg= 'white')
+        LabelNombre.place(x=5,y=5)
+        TextoNombre = Entry(Exportacion,width = 20)
+        TextoNombre.place(x=5,y=25)
+
+        btnAceptar = Button(Exportacion,text= 'Aceptar',command = lambda:self.exportar(TextoNombre, Exportacion))
+        btnAceptar.place(x= 5,y=45)
+        Exportacion.place(x=780, y=450)
+    
+    def impNombre(self):
+        #self.B_Exportacion(state =DISABLED)
+        Importacion = Canvas(self.instancia , width= 150, height = 72, bg = "black")
+        LabelNombre= Label(Importacion,text = 'Nombre del archivo a importar',font= ('Times New Roman', 7),bg= 'black',fg= 'white')
+        LabelNombre.place(x=5,y=5)
+        TextoNombre = Entry(Importacion,width = 20)
+        TextoNombre.place(x=5,y=25)
+
+        btnAceptar = Button(Importacion,text= 'Aceptar',command = lambda:self.importar(TextoNombre, Importacion))
+        btnAceptar.place(x= 5,y=45)
+        Importacion.place(x=780, y=450)
+
+    def exportar(self, Nombre, Canvas):
+        lista = ["nombre", "valor", "posicionx", "posiciony", "conectado", "componente"]
+        data = []
+        for elem in self.Resistencias:
+            data.append([elem.getNom(), elem.getValor(), elem.getCoords()[0], elem.getCoords()[1], elem.getConectadoCon(), "Resistencia"])
+        for elem in self.Fuentes:
+            data.append([elem.getNom(), elem.getValor(), elem.getCoords()[0], elem.getCoords()[1], elem.getConectadoCon(), "Fuente"])
+        df = pd.DataFrame(data, columns = lista)
+        nombre = Nombre.get()
+        direccion = "Guardados/" + nombre + ".csv"
+        df.to_csv(direccion, index=False)
+        Canvas.destroy()
+
+    def importar(self, Nombre, Canvas):
+        nombre = Nombre.get()
+        direccion = "Guardados/" + nombre + ".csv"
+        data = []
+        try:
+            data = pd.read_csv(direccion)
+        except:
+            pass
+        
+        contador = len(data)
+        while contador != 0:
+            if data['componente'][contador-1] == "Resistencia":
+                self.ConfiguracionNombreResitencia = data['nombre'][contador-1]
+                self.ConfiguracionValorResitencia = data['valor'][contador-1]
+                self.ponerResistencia(data['posicionx'][contador-1],data['posiciony'][contador-1])
+            elif data['componente'][contador-1] == "Fuente":
+                self.ConfiguracionNombreFuente = data['nombre'][contador-1]
+                self.ConfiguracionValorFuente = data['valor'][contador-1]
+                self.ponerFuente(data['posicionx'][contador-1],data['posiciony'][contador-1])
+            contador -= 1
+        
+        contador1 = len(data)
+        while contador1 != 0:
+            nombreslist = list(str(data['conectado'][contador1-1]))
+            nombres = []
+            nombre = ""
+            for nom in nombreslist:
+                if nom == ",":
+                    nombres.append(nombre)
+                    nombre = ""
+                else:
+                    nombre += str(nom)
+
+            if len(nombres) != 0:
+                for elem in self.Resistencias:
+                    if elem.getNom() == data['nombre'][contador1-1]:
+                        for nombr in nombres:
+                            self.ConectarCon(nombr, elem)
+                for elem in self.Fuentes:
+                    if elem.getNom() == data['nombre'][contador1-1]:
+                        for nombr in nombres:
+                            self.ConectarCon(nombr, elem)
+            contador1 -= 1
+
+        Canvas.destroy()
+
+    def motion2(self,event):
         x, y = event.x, event.y
         for elem in (self.cables):
             if elem.colision(x,y):
@@ -97,22 +193,26 @@ class Ventana:
         btnAceptar = Button(configuracion,text= 'Aceptar',command = lambda:self.AceptarConfiguracion(configuracion,TextoNombre,TextoValor,who))
         btnAceptar.place(x= 5,y=45)
         configuracion.place(x=280, y=450)
+
     def simulacion(self):
         for elem in (self.Resistencias):
-            LabelNombreValor = Label(self.instancia,text = elem.getNom() + "\n"+ elem.getValor() +"(Ω)",font= ('Times New Roman',15),bg= '#efe4b0',fg= 'black')
+            LabelNombreValor = Label(self.instancia,text = str(elem.getNom()) + "\n"+ str(elem.getValor()) +"(Ω)",font= ('Times New Roman',15),bg= '#efe4b0',fg= 'black')
             LabelNombreValor.place(x= elem.getCoords()[0]-40,y=elem.getCoords()[1]+50)
             self.Simulacion.append(LabelNombreValor)
         for elem in (self.Fuentes):
-            LabelNombreValor = Label(self.instancia,text = elem.getNom() + "\n"+ elem.getValor() +"(V)",font= ('Times New Roman',15),bg= '#efe4b0',fg= 'black')
+            LabelNombreValor = Label(self.instancia,text = str(elem.getNom()) + "\n"+ str(elem.getValor()) +"(V)",font= ('Times New Roman',15),bg= '#efe4b0',fg= 'black')
             LabelNombreValor.place(x= elem.getCoords()[0]-40,y=elem.getCoords()[1]+50)
             self.Simulacion.append(LabelNombreValor)
+
         #boton de Terminar Simulacion
         self.B_Termina_Simulacion = Button(self.instancia,text= 'Terminar',height = 4, width = 11,command = lambda:self.terminarSimulacion())
-        self.B_Termina_Simulacion.place(x=1000,y=450)
+        self.B_Termina_Simulacion.place(x=1180,y=450)
         self.Simulacion.append(self.B_Termina_Simulacion)
+
     def terminarSimulacion(self):
         for elem in (self.Simulacion):
             elem.destroy()
+
     def conectar(self, x, y, who, boton):
         boton.configure(state = DISABLED)
         conectar = Canvas(self.instancia, width=200, height=50, bg="black")
@@ -120,16 +220,20 @@ class Ventana:
         LabelNombre.place(x = 5, y = 5)
         TextoNombreConectar = Entry(conectar,width = 18)
         TextoNombreConectar.place(x=5,y=25)
-        btnAceptar = Button(conectar,text= 'Aceptar', command = lambda:self.ConectarCon(conectar, TextoNombreConectar.get(), who, boton))
+        btnAceptar = Button(conectar,text= 'Aceptar', command = lambda:self.auxConectar(conectar, TextoNombreConectar.get(), who, boton))
         btnAceptar.place(x = 135, y = 25)
         conectar.place(x = x+130, y = y-45)
-        
-    def ConectarCon(self, ventana, Nombre, who, boton):
-        coordx, coordy = who.getCoords()
+    
+    def auxConectar(self, ventana, nombre, who, boton):
         boton.configure(state = NORMAL)
         ventana.destroy()
+        self.ConectarCon(nombre, who)
+
+    def ConectarCon(self, Nombre, who):
+        coordx, coordy = who.getCoords()
         for elem in (self.Resistencias):
             if Nombre == elem.getNom() and Nombre != who.getNom():
+                who.setConectadoCon(Nombre)
                 if elem.getOrientacion() == "horizontal":
                     if elem.getCoords()[0] <= coordx:
                         if who.getOrientacion() == "horizontal":
@@ -172,6 +276,8 @@ class Ventana:
                             
         for elem in (self.Fuentes):
             if Nombre == elem.getNom() and Nombre != who.getNom():
+                who.setConectadoCon(Nombre)
+
                 if elem.getOrientacion() == "horizontal":
                     if elem.getCoords()[0] <= coordx:
                         if who.getOrientacion() == "horizontal":
@@ -281,15 +387,30 @@ class Ventana:
         
 
     def AceptarConfiguracion(self,ventana,textNom,textValor,who):
-        if who == "resistencia":
-            self.ConfiguracionNombreResitencia = textNom.get()
-            self.ConfiguracionValorResitencia = textValor.get()
-            self.ActivoResistencia = True
-        elif who == "fuente":
-            self.ConfiguracionNombreFuente = textNom.get()
-            self.ConfiguracionValorFuente = textValor.get()
-            self.ActivoFuente = True
-        ventana.destroy()    
+        valor = textValor.get()
+        nombre = textNom.get()
+        pase = False
+        if nombre != "" and valor != "":
+            if who == "resistencia":
+                for nom in self.Resistencias:
+                    if nombre == nom.getNom():
+                        pase = True
+                        break
+                if pase == False:
+                    self.ConfiguracionNombreResitencia = textNom.get()
+                    self.ConfiguracionValorResitencia = textValor.get()
+                    self.ActivoResistencia = True
+                    ventana.destroy()
+            elif who == "fuente":
+                for nom in self.Fuentes:
+                    if nombre == nom.getNom():
+                        pase = True
+                        break
+                if pase == False:
+                    self.ConfiguracionNombreFuente = textNom.get()
+                    self.ConfiguracionValorFuente = textValor.get()
+                    self.ActivoFuente = True
+                    ventana.destroy()    
 
     def ponerResistencia(self,x2,y2):
         self.B_Resistencia.configure(state = NORMAL)

@@ -1,0 +1,5 @@
+nombre,valor,posicionx,posiciony,conectado,componente
+R1,12,409,119,"R2,F1,",Resistencia
+R2,24,591,113,"R3,",Resistencia
+R3,26,791,120,"F1,",Resistencia
+F1,12,592,275,,Fuente
