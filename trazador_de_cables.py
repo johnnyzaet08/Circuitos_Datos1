@@ -21,8 +21,8 @@ def AderechaH_BizquierdaH(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,3)
         elem.setDerecha(True)
         who.setDerecha(True)
         
@@ -41,8 +41,8 @@ def AderechaH_BizquierdaH(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,1)
         who.setDerecha(True)
         elem.setIzquierda(True)
         
@@ -60,8 +60,8 @@ def AderechaH_BizquierdaH(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,1)
         elem.setIzquierda(True)
         who.setIzquierda(True)
         
@@ -78,8 +78,8 @@ def AderechaH_BizquierdaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,3)
         who.setIzquierda(True)
         elem.setDerecha(True)
         
@@ -95,8 +95,8 @@ def AderechaV_BizquierdaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,4)
+        Cable.agregarComponentes(elem,3)
         elem.setDerecha(True)
         who.setAbajo(True)
         
@@ -111,8 +111,8 @@ def AderechaV_BizquierdaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,2)
+        Cable.agregarComponentes(elem,3)
         who.setArriba(True)
         elem.setDerecha(True)
         
@@ -127,8 +127,8 @@ def AderechaV_BizquierdaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,2)
+        Cable.agregarComponentes(elem,1)
         elem.setIzquierda(True)
         who.setArriba(True)
         
@@ -143,8 +143,8 @@ def AderechaV_BizquierdaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,4)
+        Cable.agregarComponentes(elem,3)
         who.setAbajo(True)
         elem.setDerecha(True)
 
@@ -162,8 +162,8 @@ def AizquierdaH_BderechaH(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,1)
         who.setDerecha(True)
         elem.setIzquierda(True)
         
@@ -178,8 +178,8 @@ def AizquierdaH_BderechaH(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,1)
         elem.setIzquierda(True)
         who.setIzquierda(True)
         
@@ -194,8 +194,8 @@ def AizquierdaH_BderechaH(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,3)
         who.setDerecha(True)
         elem.setDerecha(True)
 
@@ -212,8 +212,8 @@ def AizquierdaH_BderechaH(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,3)
         elem.setDerecha(True)
         who.setIzquierda(True)
 
@@ -230,8 +230,8 @@ def AizquierdaV_BderechaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,4)
+        Cable.agregarComponentes(elem,1)
         elem.setIzquierda(True)
         who.setAbajo(True)
         
@@ -246,8 +246,8 @@ def AizquierdaV_BderechaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,2)
+        Cable.agregarComponentes(elem,3)
         who.setArriba(True)
         elem.setDerecha(True)
         
@@ -262,8 +262,8 @@ def AizquierdaV_BderechaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,2)
+        Cable.agregarComponentes(elem,1)
         who.setArriba(True)
         elem.setIzquierda(True)
 
@@ -279,8 +279,8 @@ def AizquierdaV_BderechaH(elem,who,fon,cables):
         #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,4)
+        Cable.agregarComponentes(elem,3)
         elem.setDerecha(True)
         who.setAbajo(True)
 
@@ -298,8 +298,8 @@ def AarribaIzquierdaH_BabajoDerechaV(elem,who,fon,cables):
         
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,2)
         who.setDerecha(True)
         elem.setArriba(True)
         
@@ -315,8 +315,8 @@ def AarribaIzquierdaH_BabajoDerechaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,2)
         who.setIzquierda(True)
         elem.setArriba(True)
     elif who.getDerecha() == False and elem.getArriba() and elem.getAbajo() ==False:
@@ -330,8 +330,8 @@ def AarribaIzquierdaH_BabajoDerechaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,4)
         elem.setAbajo(True)
         who.setDerecha(True)
         
@@ -347,8 +347,8 @@ def AarribaIzquierdaH_BabajoDerechaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,4)
         who.setIzquierda(True)
         elem.setAbajo(True)
     
@@ -365,8 +365,8 @@ def AarribaDerechaH_BabajoIzquierdaV(elem,who,fon,cables):
         
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,2)
         elem.setArriba(True)
         who.setIzquierda(True)
         
@@ -382,8 +382,8 @@ def AarribaDerechaH_BabajoIzquierdaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,2)
         who.setDerecha(True)
         elem.setArriba(True)
         
@@ -398,8 +398,8 @@ def AarribaDerechaH_BabajoIzquierdaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,4)
         who.setDerecha(True)
         elem.setAbajo(True)
     elif  who.getIzquierda() == False and elem.getArriba() and elem.getAbajo() ==False:
@@ -413,8 +413,8 @@ def AarribaDerechaH_BabajoIzquierdaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,4)
         elem.setAbajo(True)
         who.setIzquierda(True)
 
@@ -438,8 +438,8 @@ def AarribaV_BabajoV(elem,who,fon,cables):
                                 #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,4)
+        Cable.agregarComponentes(elem,2)
         who.setAbajo(True)
         elem.setArriba(True)
     elif who.getAbajo() == False and elem.getArriba() and elem.getAbajo() == False:
@@ -456,8 +456,8 @@ def AarribaV_BabajoV(elem,who,fon,cables):
                                 #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,4)
+        Cable.agregarComponentes(elem,4)
         who.setAbajo(True)
         elem.setAbajo(True)
     elif who.getArriba() == False and who.getAbajo() and elem.getArriba() == False:
@@ -474,8 +474,8 @@ def AarribaV_BabajoV(elem,who,fon,cables):
                                 #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,2)
+        Cable.agregarComponentes(elem,2)
         elem.setArriba(True)
         who.setArriba(True)
         
@@ -501,8 +501,8 @@ def AarribaV_BabajoV(elem,who,fon,cables):
                                 #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,2)
+        Cable.agregarComponentes(elem,4)
         who.setArriba(True)
         elem.setAbajo(True)
 
@@ -519,8 +519,8 @@ def AabajoIzquierdaH_BarribaDerechaV(elem,who,fon,cables):
         
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,4)
         who.setDerecha(True)
         elem.setAbajo(True)
     elif who.getDerecha() and who.getIzquierda() == False and elem.getAbajo() and elem.getArriba() ==False:
@@ -535,8 +535,8 @@ def AabajoIzquierdaH_BarribaDerechaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,2)
         who.setIzquierda(True)
         elem.setArriba(True)
     elif who.getDerecha() == False and elem.getAbajo() and elem.getArriba() ==False:
@@ -551,10 +551,11 @@ def AabajoIzquierdaH_BarribaDerechaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,2)
         elem.setArriba(True)
         who.setDerecha(True)
+        
     elif who.getDerecha() and who.getIzquierda() == False and  elem.getAbajo() ==False:
         coordx, coordy = who.getCoords()
         dosa =fon.create_line(coordx-43, coordy,coordx-43, elem.getCoords()[1]+54, width=5)
@@ -566,8 +567,8 @@ def AabajoIzquierdaH_BarribaDerechaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,4)
         who.setIzquierda(True)
         elem.setAbajo(True)
         
@@ -591,8 +592,8 @@ def AabajoDerechaH_BarribaIzquierdaV(elem,who,fon,cables):
         
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,4)
         elem.setAbajo(True)
         who.setIzquierda(True)
     elif who.getIzquierda()  == False  and elem.getAbajo() and elem.getArriba() ==False:
@@ -607,8 +608,8 @@ def AabajoDerechaH_BarribaIzquierdaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,1)
+        Cable.agregarComponentes(elem,2)
         who.setIzquierda(True)
         elem.setArriba(True)
         
@@ -624,8 +625,8 @@ def AabajoDerechaH_BarribaIzquierdaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,2)
         elem.setArriba(True)
         who.setDerecha(True)
         
@@ -640,8 +641,8 @@ def AabajoDerechaH_BarribaIzquierdaV(elem,who,fon,cables):
         #####
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,3)
+        Cable.agregarComponentes(elem,4)
         who.setDerecha(True)
         elem.setAbajo(True)
         
@@ -668,8 +669,8 @@ def AabajoV_BarribaV(who,elem,fon,cables):
                                 #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,4)
+        Cable.agregarComponentes(elem,2)
         who.setAbajo(True)
         elem.setArriba(True)
         
@@ -688,8 +689,8 @@ def AabajoV_BarribaV(who,elem,fon,cables):
                                 #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,4)
+        Cable.agregarComponentes(elem,4)
         elem.setAbajo(True)
         who.setAbajo(True)
     elif who.getArriba() == False and who.getAbajo() and elem.getArriba() == False:
@@ -707,8 +708,8 @@ def AabajoV_BarribaV(who,elem,fon,cables):
                                 #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,2)
+        Cable.agregarComponentes(elem,2)
         who.setArriba(True)
         elem.setArriba(True)
         
@@ -733,8 +734,8 @@ def AabajoV_BarribaV(who,elem,fon,cables):
                                 #
         who.agregarCable(Cable)
         elem.agregarCable(Cable)
-        Cable.agregarComponentes(who)
-        Cable.agregarComponentes(elem)
+        Cable.agregarComponentes(who,2)
+        Cable.agregarComponentes(elem,4)
         who.setArriba(True)
         elem.setAbajo(True)
         

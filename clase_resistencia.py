@@ -18,7 +18,8 @@ class Resistencia:
     def getCablesConectados(self):
         return self.cablesConectados
     def eliminarCablesConectados(self,cable):
-        self.cablesConectados.remove(cable)
+        if cable in self.cablesConectados:
+            self.cablesConectados.remove(cable)
     def agregarCable(self,cable):
         self.cablesConectados.append(cable)
     def getIzquierda(self):

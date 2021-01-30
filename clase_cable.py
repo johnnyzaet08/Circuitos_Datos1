@@ -3,6 +3,7 @@ class Cables:
         self.uniones = []
         self.coords = []
         self.componentes = []
+        self.direcciones = []
     def agregarUnion(self,union,x1,y1,x2,y2):
       self.uniones.append(union)
       self.coords.append([x1,y1,x2,y2])
@@ -33,10 +34,16 @@ class Cables:
         return choca
     def getUniones(self):
         return self.uniones
-    def agregarComponentes(self,componente):
+    def agregarComponentes(self,componente,direccion):
       self.componentes.append(componente)
+      self.direcciones.append(direccion)
     def getComponentes(self):
       return self.componentes
+    def eliminarDireccion(self,direccion):
+        self.direcciones.remove(direccion)
+
+    def getDireccion(self,indice):
+        return self.direcciones[indice]
             
             
     

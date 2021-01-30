@@ -7,7 +7,7 @@ from clase_fuente import *
 from clase_cable import *
 from trazador_de_cables import *
 from random import randint
-import pandas as pd
+##import pandas as pd
 
 
 
@@ -39,6 +39,7 @@ class Ventana:
         self.Simulacion = []
         self.cables = []
         self.infoNodo =  None
+        self.estaSimulando = False
         
 
     def abrirVentana(self):
@@ -74,7 +75,7 @@ class Ventana:
         #boton de importar
         self.B_Importar = Button(self.instancia,text= 'Importar',height = 4, width = 11,command = lambda:self.impNombre())
         self.B_Importar.place(x=680,y=450)
-
+        
         self.instancia.bind('<Motion>', self.motion2)
         self.instancia.bind('<Button-1>', self.motion)
         self.instancia.geometry('1336x548+0+100')
@@ -164,11 +165,12 @@ class Ventana:
         Canvas.destroy()
 
     def motion2(self,event):
-        x, y = event.x, event.y
-        for elem in (self.cables):
-            if elem.colision(x,y):
-                self.infoNodo.place_forget() 
-                self.infoNodo.place(x=x,y=y-12)
+        if self.estaSimulando:
+            x, y = event.x, event.y
+            for elem in (self.cables):
+                if elem.colision(x,y):
+                    self.infoNodo.place_forget() 
+                    self.infoNodo.place(x=x,y=y-12)
         
     def motion(self,event):
         x, y = event.x, event.y
@@ -195,6 +197,7 @@ class Ventana:
         configuracion.place(x=280, y=450)
 
     def simulacion(self):
+        self.estaSimulando = True
         for elem in (self.Resistencias):
             LabelNombreValor = Label(self.instancia,text = str(elem.getNom()) + "\n"+ str(elem.getValor()) +"(Ω)",font= ('Times New Roman',15),bg= '#efe4b0',fg= 'black')
             LabelNombreValor.place(x= elem.getCoords()[0]-40,y=elem.getCoords()[1]+50)
@@ -210,6 +213,8 @@ class Ventana:
         self.Simulacion.append(self.B_Termina_Simulacion)
 
     def terminarSimulacion(self):
+        self.estaSimulando = False
+        self.infoNodo.place_forget() 
         for elem in (self.Simulacion):
             elem.destroy()
 
@@ -336,15 +341,26 @@ class Ventana:
 
     def eliminarComponente(self,componente, boton, canvas):
         boton.destroy()
-        while componente.getCablesConectados() != []:
-            print(len( componente.getCablesConectados()))
-            for elem2 in  componente.getCablesConectados()[0].getUniones():
+        for elem in componente.getCablesConectados():
+            for i in elem.getComponentes():
+                a = elem.getComponentes().index(i)
+                if elem.getDireccion(a) == 3:
+                    i.setDerecha(False)
+                elif elem.getDireccion(a) == 2:
+                    i.setArriba(False)
+                elif elem.getDireccion(a) == 1:
+                    i.setIzquierda(False)
+                elif elem.getDireccion(a) == 4:
+                    i.setAbajo(False)
+                    
+                
+            for elem2 in  elem.getUniones():
                 self.fon.delete(elem2)
-            print(componente.getCablesConectados()[0].getComponentes()[0])
-            eliminar = componente.getCablesConectados()[0]
-            componente.getCablesConectados()[0].getComponentes()[0].eliminarCablesConectados(eliminar)
-            componente.getCablesConectados()[0].getComponentes()[1].eliminarCablesConectados(eliminar)
             
+            for elem3 in elem.getComponentes():
+                elem3.eliminarCablesConectados(elem3)
+            self.cables.remove(elem)
+                
         if componente in self.Fuentes:
             self.Fuentes.remove(componente)
         if componente in self.Resistencias:
